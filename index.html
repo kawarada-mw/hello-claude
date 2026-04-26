@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mini X</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Mini X</h1>
+      <div id="user-area" class="user-area" hidden>
+        <span id="user-email"></span>
+        <button id="signout-btn" type="button">ログアウト</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="auth-section" class="card" hidden>
+        <h2>ログイン / 新規登録</h2>
+        <form id="auth-form">
+          <label>
+            メールアドレス
+            <input type="email" id="email" autocomplete="email" required />
+          </label>
+          <label>
+            パスワード（6文字以上）
+            <input
+              type="password"
+              id="password"
+              autocomplete="current-password"
+              minlength="6"
+              required
+            />
+          </label>
+          <div class="auth-actions">
+            <button type="submit" id="signin-btn">ログイン</button>
+            <button type="button" id="signup-btn">新規登録</button>
+          </div>
+          <p id="auth-message" class="message" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section id="post-section" class="card" hidden>
+        <form id="post-form">
+          <label class="visually-hidden" for="post-content">いまどうしてる？</label>
+          <textarea
+            id="post-content"
+            placeholder="いまどうしてる？"
+            rows="3"
+            maxlength="280"
+            required
+          ></textarea>
+          <div class="post-actions">
+            <span id="char-count">0 / 280</span>
+            <button type="submit" id="post-btn">投稿する</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="feed-section" hidden>
+        <h2>タイムライン</h2>
+        <ul id="feed" class="feed"></ul>
+        <p id="feed-empty" class="message" hidden>まだ投稿がありません。</p>
+      </section>
+
+      <section id="config-warning" class="card warning" hidden>
+        <h2>セットアップが必要です</h2>
+        <p>
+          <code>config.example.js</code> を <code>config.js</code>
+          にコピーし、Supabase プロジェクトの URL と anon key を設定してください。
+        </p>
+      </section>
+    </main>
+
+    <script src="./config.js" onerror="window.__configMissing = true"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

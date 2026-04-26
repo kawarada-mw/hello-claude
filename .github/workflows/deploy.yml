@@ -1,0 +1,59 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate config.js from repository variables
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "::error::Repository variables SUPABASE_URL and SUPABASE_ANON_KEY must be set."
+            echo "Go to Settings > Secrets and variables > Actions > Variables tab to add them."
+            exit 1
+          fi
+          cat > config.js <<EOF
+          window.SUPABASE_CONFIG = {
+            SUPABASE_URL: "${SUPABASE_URL}",
+            SUPABASE_ANON_KEY: "${SUPABASE_ANON_KEY}",
+          };
+          EOF
+
+      - name: Stage site
+        run: |
+          mkdir -p _site
+          cp index.html style.css app.js config.js _site/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
