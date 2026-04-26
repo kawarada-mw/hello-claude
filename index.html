@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ランダムポケモン3匹</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>ランダムポケモン 3匹</h1>
+    <p class="subtitle">PokeAPI からランダムに 3 匹のポケモンを表示します</p>
+    <button id="reload-btn" type="button">別のポケモンを見る</button>
+  </header>
+
+  <main>
+    <div id="pokemon-list" class="pokemon-list" aria-live="polite"></div>
+  </main>
+
+  <footer>
+    <p>
+      Data from <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer">PokeAPI</a>
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
